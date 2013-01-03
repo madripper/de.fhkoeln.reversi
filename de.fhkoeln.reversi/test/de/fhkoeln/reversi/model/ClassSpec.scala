@@ -37,6 +37,18 @@ class ClassSpec extends SpecificationWithJUnit  {
     "has a black token" in {
       cell.isBlack must be_!=(true)
     }
+    
+    "returns the String ' '" in {
+      cell.toString must be_==(" ")
+    }
+    
+    "don't return the String 'o'" in {
+      cell.toString must be_!=("o")
+    }
+    
+    "dont return the String '*'" in {
+      cell.toString must be_!=("*")
+    }
   }
   
   "A new Cell at x,y=3,7 and with a white token in it " should {
@@ -73,6 +85,18 @@ class ClassSpec extends SpecificationWithJUnit  {
     "has a black token" in {
       cell.isBlack must be_!=(true)
     }
+    
+    "returns the String 'o'" in {
+      cell.toString must be_==("o")
+    }
+    
+    "don't return the String ' '" in {
+      cell.toString must be_!=(" ")
+    }
+    
+    "dont return the String '*'" in {
+      cell.toString must be_!=("*")
+    }
   }
   
   "A new Cell at x,y=5,3 and with a black token in it " should {
@@ -108,6 +132,18 @@ class ClassSpec extends SpecificationWithJUnit  {
     
     "has a black token" in {
       cell.isBlack must be_==(true)
+    }
+    
+    "returns the String '*'" in {
+      cell.toString must be_==("*")
+    }
+    
+    "don't return the String 'o'" in {
+      cell.toString must be_!=("o")
+    }
+    
+    "dont return the String ' '" in {
+      cell.toString must be_!=(" ")
     }
   }
   
