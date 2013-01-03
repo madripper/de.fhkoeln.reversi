@@ -1,5 +1,5 @@
 package de.fhkoeln.reversi.model
 
-class Grid {
+class Grid( val size: Int ) {
 
 }
