@@ -2,7 +2,7 @@ package de.fhkoeln.reversi.model
 
 import org.specs2.mutable._
 
-class ClassSpec extends SpecificationWithJUnit  {
+class CellSpec extends SpecificationWithJUnit  {
   "A new Cell at x,y=0,0 and with no tokens in it " should {
     val cell = new Cell( 0, 0, false, false )
     
