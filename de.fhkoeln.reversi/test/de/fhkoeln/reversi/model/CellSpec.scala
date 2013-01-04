@@ -3,149 +3,93 @@ package de.fhkoeln.reversi.model
 import org.specs2.mutable._
 
 class CellSpec extends SpecificationWithJUnit  {
-  "A new Cell at x,y=0,0 and with no tokens in it " should {
-    val cell = new Cell( 0, 0, false, false )
+  "A new Cell with no tokens" should {
+    val cell = new Cell( '-' );
     
-    "has it's x-coords equal 0" in {
-      cell.x must be_==(0)      
+    "appears as empty." in {
+      cell.isEmpty must be_==( true )
     }
     
-    "has it's y-coords equal 0" in {
-      cell.y must be_==(0)      
+    "has no white token in it." in {
+      val data: Char = cell.token
+      'W' must_!= data
     }
     
-    "appears as not set" in {
-      cell.isSet must be_==(false)      
+    "has no black token in it." in {
+      val data: Char = cell.token
+      'B' must_!= data
     }
     
-    "appears not as set" in {
-      cell.isSet must be_!=(true)      
+    "returns the String ' '." in {
+      cell.toString must be_==( " " )
     }
     
-    "has no white token" in {
-      cell.isWhite must be_==(false)      
+    "doesn't return 'W'." in {
+      cell.toString must be_!=( "W" )
     }
     
-    "has a white token" in {
-      cell.isWhite must be_!=(true)      
-    }
-    
-    "has no black token" in {
-      cell.isBlack must be_==(false)
-    }
-    
-    "has a black token" in {
-      cell.isBlack must be_!=(true)
-    }
-    
-    "returns the String ' '" in {
-      cell.toString must be_==(" ")
-    }
-    
-    "don't return the String 'o'" in {
-      cell.toString must be_!=("o")
-    }
-    
-    "dont return the String '*'" in {
-      cell.toString must be_!=("*")
+    "doesn't return 'B'." in {
+      cell.toString must be_!=( "B" )
     }
   }
   
-  "A new Cell at x,y=3,7 and with a white token in it " should {
-    val cell = new Cell( 3, 7, true, true )
+  "A new Cell with a white token in it" should {
+    val cell = new Cell( 'W' );
     
-    "has it's x-coords equal 3" in {
-      cell.x must be_==(3)      
+    "appears not as empty." in {
+      cell.isEmpty must be_!=( true )
     }
     
-    "has it's y-coords equal 7" in {
-      cell.y must be_==(7)      
+    "has a white token in it." in {
+      val data: Char = cell.token
+      'W' must_== data
     }
     
-    "doesn't appears to be set" in {
-      cell.isSet must be_!=(false)      
+    "has no black token in it." in {
+      val data: Char = cell.token
+      'B' must_!= data
     }
     
-    "appears as set" in {
-      cell.isSet must be_==(true)      
+    "returns the String 'W'." in {
+      cell.toString must be_==( "W" )
     }
     
-    "has no white token" in {
-      cell.isWhite must be_!=(false)      
+    "doesn't return ' '." in {
+      cell.toString must be_!=( " " )
     }
     
-    "has a white token" in {
-      cell.isWhite must be_==(true)      
-    }
-    
-    "has no black token" in {
-      cell.isBlack must be_==(false)
-    }
-    
-    "has a black token" in {
-      cell.isBlack must be_!=(true)
-    }
-    
-    "returns the String 'o'" in {
-      cell.toString must be_==("o")
-    }
-    
-    "don't return the String ' '" in {
-      cell.toString must be_!=(" ")
-    }
-    
-    "dont return the String '*'" in {
-      cell.toString must be_!=("*")
+    "doesn't return 'B'." in {
+      cell.toString must be_!=( "B" )
     }
   }
   
-  "A new Cell at x,y=5,3 and with a black token in it " should {
-    val cell = new Cell( 5, 3, true, false )
+  "A new Cell with a black token in it" should {
+    val cell = new Cell( 'B' );
     
-    "has it's x-coords equal 5" in {
-      cell.x must be_==(5)      
+    "appears not as empty." in {
+      cell.isEmpty must be_!=( true )
     }
     
-    "has it's y-coords equal 3" in {
-      cell.y must be_==(3)      
+    "has no white token in it." in {
+      val data: Char = cell.token
+      'W' must_!= data
     }
     
-    "doesn't appears to be set" in {
-      cell.isSet must be_!=(false)      
+    "has a black token in it." in {
+      val data: Char = cell.token
+      'B' must_== data
     }
     
-    "appears as set" in {
-      cell.isSet must be_==(true)      
+    "returns the String 'B'." in {
+      cell.toString must be_==( "B" )
     }
     
-    "has no white token" in {
-      cell.isWhite must be_==(false)      
+    "doesn't return 'W'." in {
+      cell.toString must be_!=( "W" )
     }
     
-    "does not have a white token" in {
-      cell.isWhite must be_!=(true)      
-    }
-    
-    "has no black token" in {
-      cell.isBlack must be_!=(false)
-    }
-    
-    "has a black token" in {
-      cell.isBlack must be_==(true)
-    }
-    
-    "returns the String '*'" in {
-      cell.toString must be_==("*")
-    }
-    
-    "don't return the String 'o'" in {
-      cell.toString must be_!=("o")
-    }
-    
-    "dont return the String ' '" in {
-      cell.toString must be_!=(" ")
+    "doesn't return ' '." in {
+      cell.toString must be_!=( " " )
     }
   }
-  
-  
 }
