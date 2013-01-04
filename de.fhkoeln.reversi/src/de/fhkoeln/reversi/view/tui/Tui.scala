@@ -18,8 +18,8 @@ class Tui( var controller: ReversiController ) extends Reactor {
       case "n" => controller.reset
       case _ => {
         input.toList.filter(c => c != ' ').map(c => c.toString.toInt) match {
-          case row :: column :: Nil => {
-            controller.setCell(row, column)
+          case column :: row :: Nil => {
+            controller.setCell(column, row)
           }
           case _ => println("False Input!!!")
         }
