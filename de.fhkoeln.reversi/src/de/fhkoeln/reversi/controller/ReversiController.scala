@@ -8,7 +8,8 @@ class ReversiController( var grid : Grid ) extends Publisher {
     
   }
   
-  def setCell( x: Int, y: Int ) {
-    
+  def setCell( column: Int, row: Int ) {
+    grid.update( column, row, 'W' )
+    println( grid.toString )
   }
 }
