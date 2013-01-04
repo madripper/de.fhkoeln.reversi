@@ -4,8 +4,7 @@ import org.specs2.mutable._
 
 class GridSpec extends SpecificationWithJUnit {
   "A new Grid with the size of 1x1 and with no tokens in it " should {
-    var cell = new Cell( '-' )
-    var grid = new Grid( Vector( cell ) )
+    var grid = new Grid( 1 )
     
     "has not the size of 1x1" in {
       grid.size must be_!= (1)
@@ -69,8 +68,9 @@ class GridSpec extends SpecificationWithJUnit {
       grid.toString must be_== ( box )
     } 
     
-    grid.update( 3, 2, 'W' )
+    
     "appears no longer as empty after an update with a white token at the coords 3,2" in {
+      grid.update( 3, 2, 'W' )
       grid.isFieldEmpty(3,2) must beFalse
     }
     
@@ -84,11 +84,13 @@ class GridSpec extends SpecificationWithJUnit {
     "| W |" +
     "+---+" +
     " at the cords x,y = 3,2" in {
+      println( grid.toString )
       grid.getStringFrom( 3, 2 ) must be_==("+---+\n| W |\n+---+")     
     }
     
-    grid.update( 2, 3, 'B' )
+    
     "appears no longer as empty after an update with a black token at the coords 2,3" in {
+      grid.update( 2, 3, 'B' )
       grid.isFieldEmpty(2,3) must beFalse
     }
     
@@ -103,8 +105,7 @@ class GridSpec extends SpecificationWithJUnit {
     "+---+" +
     " at the cords x,y = 2,3" in {
       grid.getStringFrom( 2, 3 ) must be_==("+---+\n| B |\n+---+")     
-    }
-    
+    }  
     
   }
 }
