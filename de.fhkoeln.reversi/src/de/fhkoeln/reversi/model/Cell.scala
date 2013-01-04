@@ -14,8 +14,10 @@ class Cell( val colour: Char ) {
                 isEmpty = false
     case 'B' => overrideString = "B" // Schwarzer Stein / black token
                 isEmpty = false
-    case '-' => overrideString = " " // kein Stein / no token
+    case '-' => overrideString = "-" // kein Stein / no token
       			isEmpty = true
+    case _   => overrideString = "-" // default: kein Stein
+                isEmpty = true
   }
   
   override def toString = ( overrideString )

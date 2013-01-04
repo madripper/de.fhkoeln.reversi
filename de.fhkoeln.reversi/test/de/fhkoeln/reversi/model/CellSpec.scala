@@ -20,8 +20,8 @@ class CellSpec extends SpecificationWithJUnit  {
       'B' must_!= data
     }
     
-    "returns the String ' '." in {
-      cell.toString must be_==( " " )
+    "returns the String '-'." in {
+      cell.toString must be_==( "-" )
     }
     
     "doesn't return 'W'." in {
@@ -54,8 +54,8 @@ class CellSpec extends SpecificationWithJUnit  {
       cell.toString must be_==( "W" )
     }
     
-    "doesn't return ' '." in {
-      cell.toString must be_!=( " " )
+    "doesn't return '-'." in {
+      cell.toString must be_!=( "-" )
     }
     
     "doesn't return 'B'." in {
@@ -88,8 +88,8 @@ class CellSpec extends SpecificationWithJUnit  {
       cell.toString must be_!=( "W" )
     }
     
-    "doesn't return ' '." in {
-      cell.toString must be_!=( " " )
+    "doesn't return '-'." in {
+      cell.toString must be_!=( "-" )
     }
   }
 }
