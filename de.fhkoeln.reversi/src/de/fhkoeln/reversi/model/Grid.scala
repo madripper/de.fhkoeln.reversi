@@ -71,5 +71,5 @@ class Grid( cells: Vector[Cell] ) {
         (box = box.replaceFirst("x", getTokenFrom(column, row).toString))
       }
       box
-      }
+    }
 }
