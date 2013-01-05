@@ -60,9 +60,7 @@ class Grid( cells: Vector[Cell] ) {
 	}
 	
 	def update( column: Int, row: Int, token: Char ) {
-	  var cell: Cell = runFields( column, row )
-	  cell.isEmpty = false
-	  cell.token = token
+	  runFields( column, row ).update(token)
 	}
 	
 	override def toString = {
