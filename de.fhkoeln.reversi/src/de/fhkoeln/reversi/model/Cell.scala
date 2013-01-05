@@ -24,6 +24,12 @@ class Cell( colour: Char ) {
       			token = '-'
   }
   
+  def update( token: Char ) {
+    this.overrideString = token.toString
+    this.isEmpty = false
+    this.token = token
+  }
+  
   override def toString = ( overrideString )
 }
 
