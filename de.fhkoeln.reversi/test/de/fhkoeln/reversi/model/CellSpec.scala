@@ -92,4 +92,39 @@ class CellSpec extends SpecificationWithJUnit  {
       cell.toString must be_!=( "-" )
     }
   }
+  
+  "An empty Cell has after an Update to a white token" should {
+    val cell = new Cell( '-' )
+    cell.update( 'W' )
+    "appears not as empty" in {
+      cell.isEmpty must be_!=( true )
+    }
+    
+    "has a white token in it" in {
+      val data: Char = cell.token
+      'W' must_== data
+    }
+    
+    "returns the string 'W'" in {
+      cell.toString must be_==( "W" )
+    }
+  }
+  
+  "An empty Cell has after an Update to a white token" should {
+    val cell = new Cell( '-' )
+    cell.update( 'B' )
+    "appears not as empty" in {
+      cell.isEmpty must be_!=( true )
+    }
+    
+    "has a white token in it" in {
+      val data: Char = cell.token
+      'B' must_== data
+    }
+    
+    "returns the string 'B'" in {
+      cell.toString must be_==( "B" )
+    }
+  }
+  
 }
