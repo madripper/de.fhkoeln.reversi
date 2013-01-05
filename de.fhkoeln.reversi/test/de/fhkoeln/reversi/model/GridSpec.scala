@@ -66,15 +66,18 @@ class GridSpec extends SpecificationWithJUnit {
       val line: String = ("| - ") * blocknum + "|\n"        
       var box: String = "\n" + (lineseparator + (line)) * blocknum + lineseparator
       grid.toString must be_== ( box )
-    } 
+    }     
+  }
+  
+  "After an update with a white token at the coords 3,2 the field" should {
+    var grid = new Grid( 1 )
+    grid.update( 3, 2, 'W' )
     
-    
-    "appears no longer as empty after an update with a white token at the coords 3,2" in {
-      grid.update( 3, 2, 'W' )
+    "doesn't appears as an empty field" in {
       grid.isFieldEmpty(3,2) must beFalse
     }
     
-    "has after an update a white token at the coords 3,2" in {
+    "has a white token at the coords 3,2" in {
       var retChar: Char = grid.getTokenFrom(3,2)
       'W' must_== retChar
     }
@@ -84,13 +87,15 @@ class GridSpec extends SpecificationWithJUnit {
     "| W |" +
     "+---+" +
     " at the cords x,y = 3,2" in {
-      println( grid.toString )
       grid.getStringFrom( 3, 2 ) must be_==("+---+\n| W |\n+---+")     
     }
+  }
+  
+  "After another update whit a black token at the coords 2,3, the field" should {
+    var grid = new Grid( 1 )
+    grid.update( 2, 3, 'B' )
     
-    
-    "appears no longer as empty after an update with a black token at the coords 2,3" in {
-      grid.update( 2, 3, 'B' )
+    "doesn't appears as an empty field" in {
       grid.isFieldEmpty(2,3) must beFalse
     }
     
@@ -105,7 +110,6 @@ class GridSpec extends SpecificationWithJUnit {
     "+---+" +
     " at the cords x,y = 2,3" in {
       grid.getStringFrom( 2, 3 ) must be_==("+---+\n| B |\n+---+")     
-    }  
-    
+    } 
   }
 }
