@@ -30,21 +30,21 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
   }
   
   def setCell( column: Int, row: Int ): Boolean = {
-    val movePossible: List[Int] = board.possibleMove( column, row, switchPlayer )
+    val movePossible: List[(Int, Int, Int)] = board.possibleMove( column, row, switchPlayer )
     playerCanMove = if( movePossible.isEmpty ) false else true
     if( playerCanMove ) {
-      if( movePossible.contains(column*10+row) ) {        
-    	  turnNo = board.takeTurn( column, row, switchPlayer )
-    	  switchPlayer = !switchPlayer 
+      for( entryCnt <- 0 to movePossible.size-1 ) {
+        movePossible(entryCnt) match {
+          case (column, row, _) =>                
+              var lastElement: Int = movePossible(entryCnt)._3
+	    	  turnNo = board.takeTurn( column, row, switchPlayer, lastElement )
+	    	  
+          case _ => false
+        }    
       }
-      else {
-        println( "Invalid move. Try Again.." )
-      }
+      switchPlayer = !switchPlayer
     }
     else ping = cantMove( turnNo )
-    
-    
-    
     
     false
   }
