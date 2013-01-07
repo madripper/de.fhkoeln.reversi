@@ -12,6 +12,12 @@ import scala.swing.Reactor
  */
 class Tui(var controller: ReversiArrayController) extends Reactor {
   listenTo(controller)
+  
+/*  reactions += {
+    case e: RestartGame => printTui
+  }
+*/
+  
   printTui
 
   /**
