@@ -5,23 +5,17 @@ package de.fhkoeln.reversi.model
  *          Is there a token on the cell? --> true: occupied; false: unoccupied 
  */
 class Cell( colour: Char ) {
-  var isEmpty: Boolean = true
-  var overrideString: String = "-"
-  var token: Char = '-'
+  var isEmpty: Boolean = _
+  var overrideString: String = _
+  var token: Char = _
   
   colour match {
-    case 'W' => overrideString = "W" // Weißer Stein / white token
-                isEmpty = false
-                token = 'W'
-    case 'B' => overrideString = "B" // Schwarzer Stein / black token
-                isEmpty = false
-                token = 'B'
-    case '-' => overrideString = "-" // kein Stein / no token
-      			isEmpty = true
-      			token = '-'
-    case _   => overrideString = "-" // default: kein Stein
+    case 'W' => update( colour )
+    case 'B' => update( colour )
+    case '-' => update( colour )
                 isEmpty = true
-      			token = '-'
+    case _   => update( '-' )
+                isEmpty = true
   }
   
   def update( token: Char ) {
@@ -32,5 +26,3 @@ class Cell( colour: Char ) {
   
   override def toString = ( overrideString )
 }
-
-
