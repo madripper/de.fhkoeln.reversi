@@ -127,4 +127,24 @@ class CellSpec extends SpecificationWithJUnit  {
     }
   }
   
+  "An Cell with no valid Tokens in it, which catched by the default Case," should {
+    val cell = new Cell( ' ' )
+    "will be empty." in {
+      cell.isEmpty must beTrue
+    }
+    
+    "has no token in it." in {
+      var token: Char = cell.token
+      '-' must_== token
+    }
+    
+    "returns the string '-'." in {
+      var token: Char = cell.token
+      '-' must_== token
+    }
+    
+    
+    
+    
+  }
 }
