@@ -174,8 +174,6 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
             boardPositions(rightCheck, column, right, row, none, switchPlayer)
           case 8 =>
             boardPositions(downCheck, column, none, row, down, switchPlayer)
-          case _ => 
-            false
         }
       if( isValidMove )
         retList = retList :+ (column, row, dir)

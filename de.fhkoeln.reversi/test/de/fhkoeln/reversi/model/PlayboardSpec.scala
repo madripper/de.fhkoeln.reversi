@@ -169,10 +169,6 @@ class PlayboardSpec extends SpecificationWithJUnit {
       board.possibleMove(4, 2, false).contains((4, 2, 8)) must beTrue
     }
     
-    "the white Player tries to put a token at coords 5, 3 and one possible move is to coords 4, 4." in {
-      board.possibleMove(4, 2, false).contains((4, 2, 4)) must beTrue
-    }
-    
     "the white Player tries an invalid move at the coords -2, -4." in {
       board.findMove(-3, -5, 5, false) must beFalse      
     }
