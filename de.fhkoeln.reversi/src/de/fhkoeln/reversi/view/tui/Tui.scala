@@ -4,31 +4,14 @@ import de.fhkoeln.reversi.controller.ReversiArrayController
 import scala.io.Source._
 import scala.swing.Reactor
 
-/**
- * <pre>
- * <b>Class <i>Tui</i></b>
- *
- * </pre>
- */
 class Tui(var controller: ReversiArrayController) extends Reactor {
   listenTo(controller)
-  
-/*  reactions += {
-    case e: RestartGame => printTui
-  }
-*/
   controller.init
   printTui
-  
-  /**
-   * <pre>
-   * <b><i>printTui</i></b>
-   * Method generates the output for the console.
-   * </pre>
-   */
-  
-  def whoWon  {
-    println({
+ 
+  def printTui: Boolean = {    
+    if( controller.ping || controller.gameEnd  ) {
+      println({
         if( controller.whiteToken < controller.blackToken )
           "black player won."
          else if( controller.whiteToken > controller.blackToken ) 
@@ -36,11 +19,6 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
          else
            "nobody won."
       })
-  }
-  def printTui: Boolean = {
-    
-    if( controller.ping || controller.gameEnd  ) {
-      whoWon
       false
       processInputLine("q\n")
     }
@@ -51,7 +29,7 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
       println( "==========" )
       println( "white player has " + controller.whiteToken + " tokens" )
       println( "black player has " + controller.blackToken + " tokens" )
-      println( "TurnNo. #: " + (controller.turnNo+1) )
+      println( "TurnNo. #: " + controller.turnNo )
       if( !controller.validMove && (controller.turnNo > 0 || ( controller.whiteToken == 4 && controller.blackToken == 4))) {
         println( "invalid move.." )
       }
