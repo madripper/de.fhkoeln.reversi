@@ -28,8 +28,8 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
     board.update( (board.x/2),   (board.y/2), 'W' )
     board.update( (board.x/2)-1, (board.y/2), 'B' )
     board.update( (board.x/2),   (board.y/2)-1, 'B' )
-    whiteToken = 4
-    blackToken = 4
+    whiteToken = 2
+    blackToken = 2
   }
   
   def reset {
@@ -70,13 +70,20 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
     if( updateSuccess ) {      
       if( switchPlayer ) {        
         blackTokenMax = blackTokenMax - 1
-        blackToken = blackToken + board.tokensTurned - 1
-        whiteToken = whiteToken - board.tokensTurned - 1
+        //blackToken = blackToken + board.tokensTurned + 1
+        //whiteToken = whiteToken - board.tokensTurned
       }
       else {
         whiteTokenMax = whiteTokenMax - 1
-        blackToken = blackToken - board.tokensTurned - 1
-        whiteToken = whiteToken + board.tokensTurned - 1
+        //blackToken = blackToken - board.tokensTurned
+        //whiteToken = whiteToken + board.tokensTurned +1
+      }
+      whiteToken = 0
+        blackToken = 0
+      for( column: Int <- 0 to board.x-1; row: Int <- 0 to board.y-1 ) {
+        
+        if( board.getTokenFrom(column, row) == 'W' ) whiteToken = whiteToken + 1 
+        if( board.getTokenFrom(column, row) == 'B' ) blackToken = blackToken + 1
       }
       
       switchPlayer = !switchPlayer

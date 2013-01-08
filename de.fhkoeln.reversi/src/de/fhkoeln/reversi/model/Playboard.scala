@@ -97,7 +97,6 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
       row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
     if(check(dirClm(column), dirRow(row))) {      
       if(board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'W' else 'B')) {
-        tokensTurned = tokensTurned + 1
         findDirectionalMove(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
       }
       else if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'B' else 'W')) true
@@ -140,6 +139,7 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
     if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if( switchPlayer ) 'W' else 'B' ) ) {
         board(dirClm(column))(dirRow(row)).update( (if( switchPlayer ) 'B' else 'W'))
         updateBoardPositions(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
+        //tokensTurned = tokensTurned + 1
         true
     }
     else false
