@@ -33,16 +33,16 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
     val movePossible: List[(Int, Int, Int)] = board.possibleMove( column, row, switchPlayer )
     playerCanMove = if( movePossible.isEmpty ) false else true
     if( playerCanMove ) {
-      for( entryCnt <- 0 to movePossible.size-1 ) {
-        movePossible(entryCnt) match {
-          case (column, row, _) =>                
-              var lastElement: Int = movePossible(entryCnt)._3
-	    	  turnNo = board.takeTurn( column, row, switchPlayer, lastElement )
-	    	  
-          case _ => false
-        }    
-      }
-      switchPlayer = !switchPlayer
+      var updateSuccess: Boolean = false
+        for( entryCnt <- 0 to movePossible.size-1 ) {
+          movePossible(entryCnt) match {
+            case (column, row, _) =>
+                updateSuccess = board.takeTurn( column, row, switchPlayer, movePossible(entryCnt)._3 )
+                turnNo = board.turnNo
+            case _ => updateSuccess = false
+          }    
+        }
+      if( updateSuccess ) switchPlayer = !switchPlayer
     }
     else ping = cantMove( turnNo )
     
@@ -50,7 +50,6 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
   }
   
   def cantMove( turnNo: Int ): Boolean = {
-    if( switchPlayer ) println( "black player can't move.." ) else println( "white player can't move" )
     if( pong == turnNo ) true else { pong = turnNo; false}
   }
   
