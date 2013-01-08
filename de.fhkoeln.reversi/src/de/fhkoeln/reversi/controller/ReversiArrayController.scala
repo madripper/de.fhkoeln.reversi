@@ -13,16 +13,10 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
   var turnNo: Int = _
   var whiteToken: Int = _
   var blackToken: Int = _
-  var whiteTokenMax: Int = 32
-  var blackTokenMax: Int = 32
+  var whiteTokenMax: Int = 30
+  var blackTokenMax: Int = 30
   var gameEnd: Boolean = (whiteTokenMax == 0) && (blackTokenMax == 0)
-    
-  /**
-   * <pre><b><i>init</i></b>
-   * This Method initilize the playboard 
-   * with the default values.
-   * </pre>
-   */  
+  
   def init {
     board.update( (board.x/2)-1, (board.y/2)-1, 'W' )
     board.update( (board.x/2),   (board.y/2), 'W' )
@@ -40,7 +34,9 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
     validMove = true
     ping = false
     pong = 0
-    turnNo = 0
+    turnNo = 0    
+    whiteTokenMax = 30
+    blackTokenMax = 30
   }
   
   def setCell( column: Int, row: Int ): Boolean = {
@@ -56,8 +52,7 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
                 turnNo = board.turnNo                 
             case _ => updateSuccess = false
           }    
-        }
-      
+        }      
     }
     else if( !movesPossible.isEmpty ) {
       validMove = false
@@ -70,18 +65,13 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
     if( updateSuccess ) {      
       if( switchPlayer ) {        
         blackTokenMax = blackTokenMax - 1
-        //blackToken = blackToken + board.tokensTurned + 1
-        //whiteToken = whiteToken - board.tokensTurned
       }
       else {
         whiteTokenMax = whiteTokenMax - 1
-        //blackToken = blackToken - board.tokensTurned
-        //whiteToken = whiteToken + board.tokensTurned +1
       }
       whiteToken = 0
-        blackToken = 0
-      for( column: Int <- 0 to board.x-1; row: Int <- 0 to board.y-1 ) {
-        
+      blackToken = 0
+      for( column: Int <- 0 to board.x-1; row: Int <- 0 to board.y-1 ) {        
         if( board.getTokenFrom(column, row) == 'W' ) whiteToken = whiteToken + 1 
         if( board.getTokenFrom(column, row) == 'B' ) blackToken = blackToken + 1
       }
