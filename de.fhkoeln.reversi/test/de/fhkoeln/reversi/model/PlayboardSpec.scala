@@ -250,19 +250,14 @@ class PlayboardSpec extends SpecificationWithJUnit {
     board.update( 4, 4, 'W' )
     board.update( 4, 3, 'B' )
     board.update( 3, 4, 'B' )
-    board.takeTurn( 2, 2, false )
+    board.takeTurn( 2, 2, false, 1 )
     
-    "The field at this coords is not empty." in {
-      board.isFieldEmpty(2, 2) must beFalse      
+    "The field at this coords is empty, because this move is not allowed." in {
+      board.isFieldEmpty(2, 2) must beTrue      
     }
-    
-    "The field at this coords has a white Token in it." in {
-      var token: Char = board.getTokenFrom(2, 2)
-      'W' must_== token
-    }   
-    
+        
     "White takes another token at the coords 5,3 and the black token at 5,4 turns to a white token." in {
-      board.takeTurn( 4, 2, false )
+      board.takeTurn( 4, 2, false, 8 )
       var token: Char = board.getTokenFrom(4, 3)
       'W' must_== token
     }
@@ -274,19 +269,14 @@ class PlayboardSpec extends SpecificationWithJUnit {
     board.update( 4, 4, 'W' )
     board.update( 4, 3, 'B' )
     board.update( 3, 4, 'B' )
-    board.takeTurn( 5, 1, true )
+    board.takeTurn( 5, 1, true, 1 )
     
-    "The field at this coords is not empty." in {
-      board.isFieldEmpty(5, 1) must beFalse      
+    "The field at this coords is empty, because this move is not allowed." in {
+      board.isFieldEmpty(5, 1) must beTrue      
     }
     
-    "The field at this coords has a black Token in it." in {
-      var token: Char = board.getTokenFrom(5, 1)
-      'B' must_== token
-    }    
-    
     "Black takes another token at the coords 6,5 and the white token at 5,5 turns to a black token." in {
-      board.takeTurn( 5, 4, true )
+      board.takeTurn( 5, 4, true, 5 )
       var token: Char = board.getTokenFrom(4, 4)
       'B' must_== token
     }
@@ -299,15 +289,108 @@ class PlayboardSpec extends SpecificationWithJUnit {
     board.update( 4, 3, 'B' )
     board.update( 3, 4, 'B' )
     
-    "the white Player has 4 possible moves." in {
+    "the white Player has 14 possible moves." in {
       board.possibleMoves( false ).size must be_== ( 14 )
     }
     
-    "the black Player has 4 possible moves." in {
+    "the black Player has 14 possible moves." in {
       board.possibleMoves( true ).size must be_== ( 14 )
     }
+  } 
+  
+  "For an up-right check, the board will be initialized and the white player put a token at 3,5, " should {
+    var board = new Playboard( 8 )
+    board.update( 3, 3, 'W' )
+    board.update( 4, 4, 'W' )
+    board.update( 4, 3, 'B' )
+    board.update( 3, 4, 'B' )
+    board.takeTurn(2, 4, false, 7 )
     
+    "at 3, 5 is a white token." in {
+      var token: Char = board.getTokenFrom(2, 4)
+      'W' must_== token
+    }
     
+    "at 4,5 is a white token." in {
+      var token: Char = board.getTokenFrom(3, 4)
+      'W' must_== token
+    }
+  }
+  
+  "Directionalcheck after a few turns. There should be " should {
+    var board = new Playboard( 8 )
+    board.update( 3, 3, 'W' )
+    board.update( 4, 4, 'W' )
+    board.update( 4, 3, 'B' )
+    board.update( 3, 4, 'B' )
+    board.takeTurn(2, 4, false, 7 )// 3, 5
+    board.takeTurn(2, 5, true, 2 ) // 3, 6  
+    board.takeTurn(5, 3, false, 5 )// 6, 4
+    board.takeTurn(5, 2, true, 4 ) // 6, 3  
+    board.takeTurn(3, 5, false, 6 )// 4, 6
+    board.takeTurn(2, 3, true, 7 ) // 3, 4
+    board.takeTurn(2, 3, true, 8 ) // 3, 4
+    board.takeTurn(2, 2, false, 3 )// 3, 3
+    
+    "a white token at 3, 3." in {
+      var token: Char = board.getTokenFrom(2, 2)
+      'W' must_== token
+    }
+    
+    "a black token at 6, 3." in {
+      var token: Char = board.getTokenFrom(5, 2)
+      'B' must_== token
+    }
+    
+    "a black token at 3, 4." in {
+      var token: Char = board.getTokenFrom(2, 3)
+      'B' must_== token
+    }
+    
+    "a white token at 4, 4." in {
+      var token: Char = board.getTokenFrom(3, 3)
+      'W' must_== token
+    }
+    
+    "a black token at 5, 4." in {
+      var token: Char = board.getTokenFrom(4, 3)
+      'B' must_== token
+    }
+    
+    "a white token at 6, 4." in {
+      var token: Char = board.getTokenFrom(5, 3)
+      'W' must_== token
+    }
+    
+    "a black token at 3, 5." in {
+      var token: Char = board.getTokenFrom(2, 4)
+      'B' must_== token
+    }
+    
+    "a white token at 4, 5." in {
+      var token: Char = board.getTokenFrom(3, 4)
+      'W' must_== token
+    }
+    
+    "a white token at 5, 5." in {
+      var token: Char = board.getTokenFrom(4, 4)
+      'W' must_== token
+    }
+    
+    "a black token at 3, 6." in {
+      var token: Char = board.getTokenFrom(2, 5)
+      'B' must_== token
+    }
+    
+    "a white token at 4, 6." in {
+      var token: Char = board.getTokenFrom(3, 5)
+      'W' must_== token
+    }    
+    
+    var isSuccessful: Boolean = board.takeTurn(7, 7, false, 15)
+    "a wrong move, which isn't successful." in {
+      isSuccessful must beFalse
+    }
   }
   
   
