@@ -281,12 +281,12 @@ class PlayboardSpec extends SpecificationWithJUnit {
     board.update( 4, 3, 'B' )
     board.update( 3, 4, 'B' )
     
-    "the white Player has 14 possible moves." in {
-      board.possibleMoves( false ).size must be_== ( 14 )
+    "the white Player has 4 possible moves." in {
+      board.possibleMoves( false ).size must be_== ( 4 )
     }
     
-    "the black Player has 14 possible moves." in {
-      board.possibleMoves( true ).size must be_== ( 14 )
+    "the black Player has 4 possible moves." in {
+      board.possibleMoves( true ).size must be_== ( 4 )
     }
   } 
   
