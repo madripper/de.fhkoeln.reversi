@@ -30,7 +30,7 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
       println( "white player has " + controller.whiteToken + " tokens" )
       println( "black player has " + controller.blackToken + " tokens" )
       println( "TurnNo. #: " + controller.turnNo )
-      if( !controller.validMove && (controller.turnNo > 0 || ( controller.whiteToken == 4 && controller.blackToken == 4))) {
+      if( !controller.validMove && (controller.turnNo > 0 || ( controller.whiteToken == 2 && controller.blackToken == 2))) {
         println( "invalid move.." )
       }
       println(
@@ -47,7 +47,7 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
       case "n" => controller.reset
                   printTui
       case _ => {
-        input.toList.filter(c => c != ' ').map(c => c.toString.toInt) match {
+        input.toList.filter(c => c != ' ').map(c => c.toString.toInt) match {          
           case column :: row :: Nil => {
             controller.setCell(column-1, row-1)
             printTui
