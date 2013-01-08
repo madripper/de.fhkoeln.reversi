@@ -17,9 +17,9 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
     case e: RestartGame => printTui
   }
 */
-  
+  controller.init
   printTui
-
+  
   /**
    * <pre>
    * <b><i>printTui</i></b>
@@ -27,7 +27,7 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
    * </pre>
    */
   def printTui = {
-    controller.init
+    
     println(controller.toString)
     println("Enter command: q-Quit n-New xy-SetCell")
     println(if (controller.switchPlayer) "black player's turn: " else "white player's turn:")

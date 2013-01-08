@@ -120,6 +120,7 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
           case _ => 
             false
         }
+    println( " - Update: " + isUpdated )
     if( isUpdated ) {
       update( column, row, if( switchPlayer ) 'B' else 'W' )
       true
@@ -129,8 +130,12 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   
   private def updateBoardPositions(check: (Int, Int) => Boolean, column: Int, dirClm: Int => Int, 
     row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
+        print( column, row, whichDir )
+        print( "switchPlayer: " + switchPlayer + " - Check: " + check(dirClm(column), dirRow(row)) + " - Token: " + board(dirClm(column))(dirRow(row)).token + " ")
     if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if( switchPlayer ) 'W' else 'B' ) ) {
+        print( " - Old Token: " + board(dirClm(column))(dirRow(row)).token + " " )
         board(dirClm(column))(dirRow(row)).update( (if( switchPlayer ) 'B' else 'W'))
+        print( " - new Token: " + board(dirClm(column))(dirRow(row)).token + " " )
         updateBoardPositions(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
         true
     }
