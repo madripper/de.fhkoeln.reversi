@@ -47,7 +47,7 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
       case "n" => controller.reset
                   printTui
       case _ => {
-        input.toList.filter(c => c != ' ').map(c => c.toString.toInt) match {          
+        input.filter(_.isDigit).toList.filter(c => c != ' ').map(c => c.toString.toInt) match {          
           case column :: row :: Nil => {
             controller.setCell(column-1, row-1)
             printTui
