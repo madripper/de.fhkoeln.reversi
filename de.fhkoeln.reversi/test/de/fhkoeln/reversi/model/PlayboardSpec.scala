@@ -59,14 +59,6 @@ class PlayboardSpec extends SpecificationWithJUnit {
     " at the cords x,y = 2,4" in {
       board.getStringFrom( 1, 3 ) must be_==("+---+\n| - |\n+---+")     
     }
-    
-    /*"should return the Grid " in {
-      var blocknum = 4                              
-      val lineseparator: String = ("+---") * blocknum + "+\n" 
-      val line: String = ("| - ") * blocknum + "|\n"        
-      var box: String = "\n" + (lineseparator + (line)) * blocknum + lineseparator
-      board.toString must be_== ( box )
-    }   */  
   }
   
   "After an update with a white token at the coords 3,2 the field" should {
@@ -393,5 +385,58 @@ class PlayboardSpec extends SpecificationWithJUnit {
     }
   }
   
+  "After a few rounds, the board will be reset and " should {
+    var board = new Playboard( 8 )
+    board.update( 3, 3, 'W' )
+    board.update( 4, 4, 'W' )
+    board.update( 4, 3, 'B' )
+    board.update( 3, 4, 'B' )
+    board.takeTurn(2, 4, false, 7 )// 3, 5
+    board.takeTurn(2, 5, true, 2 ) // 3, 6  
+    board.takeTurn(5, 3, false, 5 )// 6, 4
+    board.takeTurn(5, 2, true, 4 ) // 6, 3  
+    board.takeTurn(3, 5, false, 6 )// 4, 6
+    board.takeTurn(2, 3, true, 7 ) // 3, 4
+    board.takeTurn(2, 3, true, 8 ) // 3, 4
+    board.takeTurn(2, 2, false, 3 )// 3, 3
+    
+    /**
+     * Testfälle werden nicht immer in gleicher Reihenfolge durchgeführt.
+     * Dadurch wird dieser Testfall mal vor, mal nach dem Reset  des Boards
+     * ausgeführt und ist somit unbrauchbar.
+    "a token is at 6, 4 before the reset" in {
+      board.isFieldEmpty(5, 3) must beFalse
+    }  
+    */
+    board.reset
+    board.update( 3, 3, 'W' )
+    board.update( 4, 4, 'W' )
+    board.update( 4, 3, 'B' )
+    board.update( 3, 4, 'B' )
+    
+    "a white token is at 4,4." in {
+      var token: Char = board.getTokenFrom(3, 3)
+      'W' must_== token
+    }
+    
+    "a black token is at 5,4." in {
+      var token: Char = board.getTokenFrom(4, 3)
+      'B' must_== token
+    }
+    
+    "a black token is at 4,5." in {
+      var token: Char = board.getTokenFrom(3, 4)
+      'B' must_== token
+    }
+    
+    "a white token is at 5,5." in {
+      var token: Char = board.getTokenFrom(4, 4)
+      'W' must_== token
+    }
+    
+    "no token at 6, 4" in {
+      board.isFieldEmpty(5, 3) must beTrue
+    }    
+  }
   
 }
