@@ -42,6 +42,19 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   def update( column: Int, row: Int, token: Char ) {
     board( column )( row ).update(token)
   }
+  
+  def takeTurn(  column: Int, row: Int, switchPlayer: Boolean, whichDir: Int ): Boolean = {
+    this.whichDir = whichDir
+    takeTurn( column, row, switchPlayer )
+  }
+  
+  def takeTurn( column: Int, row: Int, switchPlayer: Boolean ): Boolean = {
+    var updateSuccess: Boolean = updateBoard( column, row, switchPlayer ) 
+    if( updateSuccess ) {
+      turnNo = turnNo + 1
+    }
+    updateSuccess
+  }
 	
   def possibleMove( column: Int, row: Int, switchPlayer: Boolean ): List[(Int, Int, Int)] =  {
     var tmpList: List[(Int, Int, Int)] = List()   
@@ -50,6 +63,8 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
             if( findMove( column, row, dir, switchPlayer ) ) 
               tmpList = tmpList :+ (column, row, dir)
     tmpList.removeDuplicates
+    tmpList = realMoves( tmpList, switchPlayer )
+    tmpList
   }
   
   def possibleMoves( switchPlayer: Boolean ): List[(Int, Int, Int)] = {
@@ -57,6 +72,8 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
     for( column <- 0 to x-1; row <- 0 to y-1 )
       tmpList = tmpList ++ possibleMove( column, row, switchPlayer )
     tmpList.removeDuplicates
+    tmpList = realMoves( tmpList, switchPlayer )
+    tmpList
   }
   
   def findMove( column: Int, row: Int, direction: Int, switchPlayer: Boolean): Boolean = {
@@ -133,18 +150,45 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
     }
     else false
   }
-    
-  def takeTurn(  column: Int, row: Int, switchPlayer: Boolean, whichDir: Int ): Boolean = {
-    this.whichDir = whichDir
-    takeTurn( column, row, switchPlayer )
-  }
   
-  def takeTurn( column: Int, row: Int, switchPlayer: Boolean ): Boolean = {
-    var updateSuccess: Boolean = updateBoard( column, row, switchPlayer ) 
-    if( updateSuccess ) {
-      turnNo = turnNo + 1
+  private def realMoves( movesList: List[(Int, Int, Int)], switchPlayer: Boolean ): List[(Int, Int, Int)] = {
+    var retList: List[(Int, Int, Int)] = List()
+    for( i <- 0 to movesList.size-1 ) {
+      var column: Int = movesList(i)._1
+      var row: Int = movesList(i)._2
+      var dir: Int = movesList(i)._3
+      var isValidMove: Boolean = dir match {
+          case 1 =>
+            boardPositions(upLeftDiagonalCheck, column, left, row, up, switchPlayer)
+          case 2 =>
+            boardPositions(upRightDiagonalCheck, column, right, row, up, switchPlayer)
+          case 3 =>
+            boardPositions(downRightDiagonalCheck, column, right, row, down, switchPlayer)
+          case 4 =>
+            boardPositions(downLeftDiagonalCheck, column, left, row, down, switchPlayer)
+          case 5 =>
+            boardPositions(leftCheck, column, left, row, none, switchPlayer)
+          case 6 =>
+            boardPositions(upCheck, column, none, row, up, switchPlayer)
+          case 7 =>
+            boardPositions(rightCheck, column, right, row, none, switchPlayer)
+          case 8 =>
+            boardPositions(downCheck, column, none, row, down, switchPlayer)
+          case _ => 
+            false
+        }
+      if( isValidMove )
+        retList = retList :+ (column, row, dir)
     }
-    updateSuccess
+    retList
+  } 
+    
+  private def boardPositions(check: (Int, Int) => Boolean, column: Int, dirClm: Int => Int, 
+    row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
+    if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if( switchPlayer ) 'W' else 'B' ) ) {
+      true
+    }
+    else false
   }
 		
   override def toString: String = {
