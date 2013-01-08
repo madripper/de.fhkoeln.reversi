@@ -27,6 +27,8 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   var blocknum: Int = board.size
   var turnNo: Int = _
   
+  var whichDir: Int = _
+  
   def isFieldEmpty( column: Int, row: Int ): Boolean = {
     board( column )( row ).isEmpty	  
   }
@@ -59,49 +61,27 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
     tmpList.removeDuplicates
   }
   
-  def getPlayerDisk( column: Int, row: Int, dir: Int): Char = {    
-     dir match {
-	    case 1 if upLeftDiagonalCheck( left(column), up(row) ) => 
-	      board( left(column))(up(row)).token
-	    case 2 if upRightDiagonalCheck(right(column), up(row)) => 
-	      board(right(column))(up(row)).token
-	    case 3 if downRightDiagonalCheck(right(column), down(row)) => 
-	      board(right(column))(down(row)).token
-	    case 4 if downLeftDiagonalCheck(left(column), down(row)) => 
-	      board(left(column))(down(row)).token
-	    case 5 if leftCheck(left(column), row) => 
-	      board(left(column))(row).token 
-	    case 6 if upCheck(column, up(row)) => 
-	      board(column)(up(row)).token
-	    case 7 if rightCheck(right(column), row) => 
-	      board(right(column))(row).token
-	    case 8 if downCheck(column, down(row)) =>
-	      board(column)(down(row)).token
-	    case _ => '-'
-	  }
-  }
-  
   def findMove( column: Int, row: Int, direction: Int, switchPlayer: Boolean): Boolean = {
     if( limitCheck(column, row)) {
-    direction match {
-      case 1 => 
-        findDirectionalMove(upLeftDiagonalCheck, column, left, row, up, switchPlayer)
-      case 2 =>
-        findDirectionalMove(upRightDiagonalCheck, column, right, row, up, switchPlayer)
-      case 3 => 
-        findDirectionalMove(downRightDiagonalCheck, column, right, row, down, switchPlayer)
-      case 4 => 
-        findDirectionalMove(downLeftDiagonalCheck, column, left, row, down, switchPlayer)
-      case 5 =>
-        findDirectionalMove(leftCheck, column, left, row, none, switchPlayer)
-      case 6 =>
-        findDirectionalMove(upCheck, column, none, row, up, switchPlayer)
-      case 7 =>
-        findDirectionalMove(rightCheck, column, right, row, none, switchPlayer)
-      case 8 =>
-        findDirectionalMove(downCheck, column, none, row, down, switchPlayer)
-      case _ => false
-    }
+      direction match {
+        case 1 => 
+          findDirectionalMove(upLeftDiagonalCheck, column, left, row, up, switchPlayer)
+        case 2 =>
+          findDirectionalMove(upRightDiagonalCheck, column, right, row, up, switchPlayer)
+        case 3 => 
+          findDirectionalMove(downRightDiagonalCheck, column, right, row, down, switchPlayer)
+        case 4 => 
+          findDirectionalMove(downLeftDiagonalCheck, column, left, row, down, switchPlayer)
+        case 5 =>
+          findDirectionalMove(leftCheck, column, left, row, none, switchPlayer)
+        case 6 =>
+          findDirectionalMove(upCheck, column, none, row, up, switchPlayer)
+        case 7 =>
+          findDirectionalMove(rightCheck, column, right, row, none, switchPlayer)
+        case 8 =>
+          findDirectionalMove(downCheck, column, none, row, down, switchPlayer)
+        case _ => false
+      }
     }
     else
       false
@@ -109,8 +89,7 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   
   private def findDirectionalMove(check: (Int, Int) => Boolean, column: Int, dirClm: Int => Int, 
       row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
-    if(check(dirClm(column), dirRow(row))) {
-      
+    if(check(dirClm(column), dirRow(row))) {      
       if(board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'W' else 'B'))
         findDirectionalMove(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
       else if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'B' else 'W')) true
@@ -119,52 +98,56 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
     else false
   }
   
-  def updateBoard( column: Int, row: Int, switchPlayer: Boolean ) {                                               
-    update( column, row, if( switchPlayer ) 'B' else 'W' )
-
-    //for( dir <- 1 to 8 )
+  def updateBoard( column: Int, row: Int, switchPlayer: Boolean ): Boolean = {         
     var dir: Int = whichDir
-        dir match {
+        var isUpdated: Boolean = dir match {
           case 1 =>
-            updateBoardPositions(upLeftDiagonalCheck, column, up, row, left, switchPlayer)
+            updateBoardPositions(upLeftDiagonalCheck, column, left, row, up, switchPlayer)
           case 2 =>
-            updateBoardPositions(upRightDiagonalCheck, column, up, row, right, switchPlayer)
+            updateBoardPositions(upRightDiagonalCheck, column, right, row, up, switchPlayer)
           case 3 =>
-            updateBoardPositions(downRightDiagonalCheck, column, down, row, right, switchPlayer)
+            updateBoardPositions(downRightDiagonalCheck, column, right, row, down, switchPlayer)
           case 4 =>
-            updateBoardPositions(downLeftDiagonalCheck, column, down, row, left, switchPlayer)
+            updateBoardPositions(downLeftDiagonalCheck, column, left, row, down, switchPlayer)
           case 5 =>
-            updateBoardPositions(leftCheck, column, none, row, left, switchPlayer)
+            updateBoardPositions(leftCheck, column, left, row, none, switchPlayer)
           case 6 =>
-            updateBoardPositions(upCheck, column, up, row, none, switchPlayer)
+            updateBoardPositions(upCheck, column, none, row, up, switchPlayer)
           case 7 =>
-            updateBoardPositions(rightCheck, column, none, row, right, switchPlayer)
+            updateBoardPositions(rightCheck, column, right, row, none, switchPlayer)
           case 8 =>
-            updateBoardPositions(downCheck, column, down, row, none, switchPlayer)
+            updateBoardPositions(downCheck, column, none, row, down, switchPlayer)
+          case _ => 
+            false
         }
+    if( isUpdated ) {
+      update( column, row, if( switchPlayer ) 'B' else 'W' )
+      true
+    }
+    else false
   } 
   
   private def updateBoardPositions(check: (Int, Int) => Boolean, column: Int, dirClm: Int => Int, 
-    row: Int, dirRow: Int => Int, switchPlayer: Boolean) {
-    println( whichDir )
-    if (check(dirClm(column), dirRow(row)) )
-      if(board(dirClm(column))(dirRow(row)).token == (if( switchPlayer ) 'B' else 'W' ) ) {
-        board(dirClm(column))(dirRow(row)).update( (if( switchPlayer ) 'W' else 'B'))
+    row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
+    if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if( switchPlayer ) 'W' else 'B' ) ) {
+        board(dirClm(column))(dirRow(row)).update( (if( switchPlayer ) 'B' else 'W'))
         updateBoardPositions(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
+        true
     }
+    else false
   }
-  
-  var whichDir: Int = _
-  
-  def takeTurn(  column: Int, row: Int, switchPlayer: Boolean, whichDir: Int ): Int = {
+    
+  def takeTurn(  column: Int, row: Int, switchPlayer: Boolean, whichDir: Int ): Boolean = {
     this.whichDir = whichDir
     takeTurn( column, row, switchPlayer )
   }
   
-  def takeTurn( column: Int, row: Int, switchPlayer: Boolean ): Int = {
-    updateBoard( column, row, switchPlayer )
-    turnNo = turnNo + 1
-    turnNo
+  def takeTurn( column: Int, row: Int, switchPlayer: Boolean ): Boolean = {
+    var updateSuccess: Boolean = updateBoard( column, row, switchPlayer ) 
+    if( updateSuccess ) {
+      turnNo = turnNo + 1
+    }
+    updateSuccess
   }
 		
   override def toString: String = {
