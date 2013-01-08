@@ -2,12 +2,6 @@ package de.fhkoeln.reversi.model
 
 import de.fhkoeln.reversi.utils.MoveGuards
 
-/**
- * <pre>
- * <b>Class <i>Playboard</i></b>
- * 
- * </pre>
- */
 class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   /**
    * <pre>
@@ -25,9 +19,7 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   var y: Int = board.head.size
   var size: Int = x * y
   var blocknum: Int = board.size
-  var turnNo: Int = _
-  var tokensTurned: Int = _
-  
+  var turnNo: Int = _  
   var whichDir: Int = _
   
   def isFieldEmpty( column: Int, row: Int ): Boolean = {
@@ -95,13 +87,11 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   
   private def findDirectionalMove(check: (Int, Int) => Boolean, column: Int, dirClm: Int => Int, 
       row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
-    if(check(dirClm(column), dirRow(row))) {      
-      if(board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'W' else 'B')) {
+    if(check(dirClm(column), dirRow(row)))
+      if(board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'W' else 'B'))
         findDirectionalMove(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
-      }
       else if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'B' else 'W')) true
       else false
-    }
     else false
   }
   
@@ -137,17 +127,15 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   private def updateBoardPositions(check: (Int, Int) => Boolean, column: Int, dirClm: Int => Int, 
     row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
     if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if( switchPlayer ) 'W' else 'B' ) ) {
-        board(dirClm(column))(dirRow(row)).update( (if( switchPlayer ) 'B' else 'W'))
-        updateBoardPositions(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
-        //tokensTurned = tokensTurned + 1
-        true
+      board(dirClm(column))(dirRow(row)).update( (if( switchPlayer ) 'B' else 'W'))
+      updateBoardPositions(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
+      true
     }
     else false
   }
     
   def takeTurn(  column: Int, row: Int, switchPlayer: Boolean, whichDir: Int ): Boolean = {
     this.whichDir = whichDir
-    tokensTurned = 0
     takeTurn( column, row, switchPlayer )
   }
   
