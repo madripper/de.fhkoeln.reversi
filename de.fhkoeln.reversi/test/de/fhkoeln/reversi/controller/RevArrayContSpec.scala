@@ -70,10 +70,20 @@ class RevArrayContSpec extends SpecificationWithJUnit {
     var board: Playboard = new Playboard( 8 )
     var controller: ReversiArrayController = new ReversiArrayController( board )
     controller.init
+    var isSuccessful: Boolean = controller.setCell( 4, 2 ) 
     
     "he is allowed to do so." in {
-      controller.setCell( 4, 2 ) must be_!=( true )
+       isSuccessful must beTrue
     }
+    
+    "the field at this coords is not empty." in {
+      controller.isFieldEmpty( 4, 2 ) must beFalse
+    }
+    
+    "the field at this coords has a white token in it." in {
+      var token: Char = controller.getTokenFrom( 4, 2 )
+      'W' must_== token
+    }   
     
     "the field at the coords 5, 4 was updated to a white token." in {
       var token: Char = controller.getTokenFrom( 4, 3 )
@@ -85,14 +95,25 @@ class RevArrayContSpec extends SpecificationWithJUnit {
     var board: Playboard = new Playboard( 8 )
     var controller: ReversiArrayController = new ReversiArrayController( board )
     controller.init
+    controller.setCell( 4, 2 )
+    var isSuccessful: Boolean = controller.setCell( 5, 4 )
     
     "he is allowed to do so." in {
-      controller.setCell( 5, 4 ) must be_!=( true )
+      isSuccessful must beTrue
     }
     
-    "the field at the coords 5, 5 was updated to a white token." in {
+    "the field at this coords is not empty." in {
+      controller.isFieldEmpty( 5, 4 ) must beFalse
+    }
+    
+    "the field at this coords has a black token in it." in {
+      var token: Char = controller.getTokenFrom( 5, 4 )
+      'B' must_== token
+    }  
+    
+    "the field at the coords 5, 5 was updated to a black token." in {
       var token: Char = controller.getTokenFrom( 4, 4 )
-      'W' must_== token
+      'B' must_== token
     }
   }
 }
