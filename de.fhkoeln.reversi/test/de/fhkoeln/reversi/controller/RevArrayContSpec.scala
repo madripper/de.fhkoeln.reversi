@@ -116,4 +116,34 @@ class RevArrayContSpec extends SpecificationWithJUnit {
       'B' must_== token
     }
   }
+  
+  "After a few moves the user want's to reset the field. Now we expect " should {
+    var board: Playboard = new Playboard( 8 )
+    var controller: ReversiArrayController = new ReversiArrayController( board )
+    controller.init
+    controller.setCell( 4, 2 )//5, 3
+    controller.setCell( 5, 4 )//6, 5
+    
+    controller.reset
+    
+    "after the reset no token at 5, 3" in {      
+      board.isFieldEmpty(4, 2) must beTrue    
+    } 
+    
+    "after the reset a black token at 5, 4" in {
+      var token: Char = board.getTokenFrom(4, 3)
+      'B' must_== token
+    } 
+    
+    "after the reset a black token at 6, 5" in {
+      board.isFieldEmpty(5, 4) must beTrue  
+    } 
+    
+    "after the reset a white token at 5, 5" in {
+      var token: Char = board.getTokenFrom(4, 4)
+      'W' must_== token
+    } 
+    
+    
+  }
 }

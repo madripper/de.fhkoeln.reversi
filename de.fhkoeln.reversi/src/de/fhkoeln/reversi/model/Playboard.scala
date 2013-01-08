@@ -26,6 +26,7 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   var size: Int = x * y
   var blocknum: Int = board.size
   var turnNo: Int = _
+  var tokensTurned: Int = _
   
   var whichDir: Int = _
   
@@ -95,8 +96,10 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
   private def findDirectionalMove(check: (Int, Int) => Boolean, column: Int, dirClm: Int => Int, 
       row: Int, dirRow: Int => Int, switchPlayer: Boolean): Boolean = {
     if(check(dirClm(column), dirRow(row))) {      
-      if(board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'W' else 'B'))
+      if(board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'W' else 'B')) {
+        tokensTurned = tokensTurned + 1
         findDirectionalMove(check, dirClm(column), dirClm, dirRow(row), dirRow, switchPlayer)
+      }
       else if(check(dirClm(column), dirRow(row)) && board(dirClm(column))(dirRow(row)).token == (if(switchPlayer) 'B' else 'W')) true
       else false
     }
@@ -144,6 +147,7 @@ class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
     
   def takeTurn(  column: Int, row: Int, switchPlayer: Boolean, whichDir: Int ): Boolean = {
     this.whichDir = whichDir
+    tokensTurned = 0
     takeTurn( column, row, switchPlayer )
   }
   

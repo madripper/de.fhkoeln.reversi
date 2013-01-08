@@ -7,10 +7,15 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
 
   var switchPlayer: Boolean = false
   var playerCanMove: Boolean = false
-  var validMove: Boolean = false
+  var validMove: Boolean = true
   var ping: Boolean = false
   var pong: Int = _
   var turnNo: Int = _
+  var whiteToken: Int = _
+  var blackToken: Int = _
+  var whiteTokenMax: Int = 32
+  var blackTokenMax: Int = 32
+  var gameEnd: Boolean = (whiteTokenMax == 0) && (blackTokenMax == 0)
     
   /**
    * <pre><b><i>init</i></b>
@@ -23,30 +28,62 @@ class ReversiArrayController( var board : Playboard ) extends Publisher {
     board.update( (board.x/2),   (board.y/2), 'W' )
     board.update( (board.x/2)-1, (board.y/2), 'B' )
     board.update( (board.x/2),   (board.y/2)-1, 'B' )
+    whiteToken = 4
+    blackToken = 4
   }
   
   def reset {
-    board = new Playboard( 8 )
+    board.reset
+    init
+    switchPlayer = false
+    playerCanMove = false
+    validMove = true
+    ping = false
+    pong = 0
+    turnNo = 0
   }
   
   def setCell( column: Int, row: Int ): Boolean = {
     val movePossible: List[(Int, Int, Int)] = board.possibleMove( column, row, switchPlayer )
+    val movesPossible: List[(Int, Int, Int)] = board.possibleMoves( switchPlayer )
     playerCanMove = if( movePossible.isEmpty ) false else true
-    if( playerCanMove ) {
-      var updateSuccess: Boolean = false
+    var updateSuccess: Boolean = false
+    if( playerCanMove ) {      
         for( entryCnt <- 0 to movePossible.size-1 ) {
           movePossible(entryCnt) match {
             case (column, row, _) =>
                 updateSuccess = board.takeTurn( column, row, switchPlayer, movePossible(entryCnt)._3 )
-                turnNo = board.turnNo
+                turnNo = board.turnNo                 
             case _ => updateSuccess = false
           }    
         }
-      if( updateSuccess ) switchPlayer = !switchPlayer
+      
     }
-    else ping = cantMove( turnNo )
+    else if( !movesPossible.isEmpty ) {
+      validMove = false
+    }
+    else {
+      ping = cantMove( turnNo )
+      switchPlayer = !switchPlayer
+    }
     
-    false
+    if( updateSuccess ) {      
+      if( switchPlayer ) {        
+        blackTokenMax = blackTokenMax - 1
+        blackToken = blackToken + board.tokensTurned - 1
+        whiteToken = whiteToken - board.tokensTurned - 1
+      }
+      else {
+        whiteTokenMax = whiteTokenMax - 1
+        blackToken = blackToken - board.tokensTurned - 1
+        whiteToken = whiteToken + board.tokensTurned - 1
+      }
+      
+      switchPlayer = !switchPlayer
+      validMove = true
+    }
+
+    updateSuccess    
   }
   
   def cantMove( turnNo: Int ): Boolean = {

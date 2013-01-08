@@ -26,11 +26,40 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
    * Method generates the output for the console.
    * </pre>
    */
-  def printTui = {
+  
+  def whoWon  {
+    println({
+        if( controller.whiteToken < controller.blackToken )
+          "black player won."
+         else if( controller.whiteToken > controller.blackToken ) 
+          "white player won."
+         else
+           "nobody won."
+      })
+  }
+  def printTui: Boolean = {
     
-    println(controller.toString)
-    println("Enter command: q-Quit n-New xy-SetCell")
-    println(if (controller.switchPlayer) "black player's turn: " else "white player's turn:")
+    if( controller.ping || controller.gameEnd  ) {
+      whoWon
+      false
+      processInputLine("q\n")
+    }
+    else {
+      println(controller.toString)
+      println("Enter command: q-Quit n-New xy-SetCell")
+      println( "Scoreboard" )
+      println( "==========" )
+      println( "white player has " + controller.whiteToken + " tokens" )
+      println( "black player has " + controller.blackToken + " tokens" )
+      println( "TurnNo. #: " + (controller.turnNo+1) )
+      if( !controller.validMove && (controller.turnNo > 0 || ( controller.whiteToken == 4 && controller.blackToken == 4))) {
+        println( "invalid move.." )
+      }
+      println(
+        if (controller.switchPlayer) "black player's turn, " + controller.blackTokenMax + " tokens left: " 
+        else "white player's turn, "+ controller.whiteTokenMax + " tokens left: ")
+    }
+    true
   }
 
   def processInputLine(input: String) = {
@@ -38,6 +67,7 @@ class Tui(var controller: ReversiArrayController) extends Reactor {
     input match {
       case "q" => continue = false
       case "n" => controller.reset
+                  printTui
       case _ => {
         input.toList.filter(c => c != ' ').map(c => c.toString.toInt) match {
           case column :: row :: Nil => {
