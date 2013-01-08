@@ -3,12 +3,6 @@ package de.fhkoeln.reversi.model
 import de.fhkoeln.reversi.utils.MoveGuards
 
 class Playboard(val board: Array[Array[Cell]]) extends MoveGuards {
-  /**
-   * <pre>
-   * <b><i>Constructor</i></b>
-   * Overloads the Constructor.
-   * </pre>
-   */
   def this(blocksize: Int) = this { 
     var blckSize: Int = blocksize
     if( blocksize < 4 ) { blckSize = 4 } else if( blocksize % 2 != 0 ) { blckSize = blocksize - 1 }
