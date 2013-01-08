@@ -1,6 +1,7 @@
-package de.fhkoeln.reversi.model
+package obsolete.de.fhkoeln.reversi.model
 
 import org.specs2.mutable._
+import obsolete.de.fhkoeln.reversi.model.Grid
 
 class GridSpec extends SpecificationWithJUnit {
   "A new Grid with the size of 1x1 and with no tokens in it " should {

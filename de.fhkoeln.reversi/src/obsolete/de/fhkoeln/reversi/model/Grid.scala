@@ -1,5 +1,6 @@
-package de.fhkoeln.reversi.model
+package obsolete.de.fhkoeln.reversi.model
 
+import de.fhkoeln.reversi.model.Cell
 import scala.math.sqrt
 
 class Grid( cells: Vector[Cell] ) {

@@ -1,7 +1,8 @@
-package de.fhkoeln.reversi.controller
+package obsolete.de.fhkoeln.reversi.controller
 
 import org.specs2.mutable._
-import de.fhkoeln.reversi.model.Grid
+import obsolete.de.fhkoeln.reversi.model.Grid
+import obsolete.de.fhkoeln.controller.ReversiController
 
 class RevContSpec extends SpecificationWithJUnit {
   "When the Controller update the field at coords 5, 3 with a token and it's the white Players turn, " should {

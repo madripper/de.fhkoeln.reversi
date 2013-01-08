@@ -1,5 +1,5 @@
-package de.fhkoeln.reversi.controller
-import de.fhkoeln.reversi.model.Grid
+package obsolete.de.fhkoeln.controller
+import obsolete.de.fhkoeln.reversi.model.Grid
 import scala.swing.Publisher
 
 class ReversiController( var grid : Grid ) extends Publisher {
